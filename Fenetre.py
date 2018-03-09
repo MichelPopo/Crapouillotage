@@ -45,7 +45,7 @@ photo2=Tk.PhotoImage(file ='touché.gif')
 cadre=Canvas(fenetre, bg="grey") # creation d'un label)
 cadre.place(x=35,y=30)
 
-def fonction(i,j):
+def position(i,j):
     global Bouton
     print(i , "     " , j)
     Bouton[i][j]= Button(cadre, image = photo3,width=50, height = 50).grid(row=i, column=j)
@@ -55,6 +55,6 @@ for i in range(10):
     Bouton[i] = 10*[0]
 for i in range(10):
     for j in range(10):
-        Bouton[i][j] = Button(cadre, image = photo,width=50, height = 50, command=lambda i=i, j=j: fonction(i, j)).grid(row=i, column=j)
+        Bouton[i][j] = Button(cadre, image = photo,width=50, height = 50, command=lambda i=i, j=j: position(i, j)).grid(row=i, column=j)
 
 fenetre.mainloop()
