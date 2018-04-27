@@ -10,52 +10,25 @@ import time
 from wave import *
 from winsound import *
 
-##############################################################################  
-##############################################################################  
-
-a=10
-b=10
-
-tableau = a*[0]
-for i in range (a) :
-    tableau[i] = b*[0]
-    
-tabposition = 10*[0]
-for i in range (10) :
-    tabposition[i] = 5*[0]
-
-numero_bato = 1
-
+                                          #FONCTIONS#
     
 def alert():
-    showinfo("alerte", "Bravo!")
-
-
-
+    showinfo("alerte", "Bravo!")  
     
-##############################################################################   
-##############################################################################  
-    
+#SON  
 
-     #SON  
 
-     
 def son_boutons_next(): 
-    PlaySound('F:/ISN/PROJET/audio/audio_bouton_next.wav', SND_ASYNC | SND_FILENAME)       
+    PlaySound('U:/theo.boyer/ISN/Crapouillotage-master/audio/audio_bouton_next.wav', SND_ASYNC | SND_FILENAME)       
 
 def son_boutons_retour():
-    PlaySound('F:/ISN/PROJET/audio/audio_bouton_retour.wav', SND_ASYNC | SND_FILENAME)
-
-
-
-##############################################################################  
-##############################################################################  
+    PlaySound('U:/theo.boyer/ISN/Crapouillotage-master/audio/audio_bouton_retour.wav', SND_ASYNC | SND_FILENAME)
     
           
-        #Placement des bateaux dans la console
-        
+
+#Placement des bateaux dans la console        
 def placer (x):
-    global numero_bato
+    global numero_bato, tabposition
     test = 0
     while test == 0 :
         hv = random.randint(0,  1) # 1 vertical ou 0 horizontal
@@ -96,13 +69,6 @@ def placer (x):
     print(numero_bato)
     numero_bato = numero_bato + 1
       
-placer(6)
-placer(5)
-placer(4)
-placer(4)
-placer(3)
-placer(3)
-placer(2)
 
 def affiche_grille(t) :
     for i in range (b) :
@@ -130,12 +96,6 @@ def test_sylvain(i, j) :
             tabposition[num][3] = tabposition[num][3]-1
             tableau[i][j] = -2
      
-    
-
-##############################################################################  
-##############################################################################  
-
-
 
 def affichage(tableau, tableau_bouton):
     
@@ -153,11 +113,8 @@ def affichage(tableau, tableau_bouton):
 
 
 def Difficile(a,b):
-    
     a = 10
     b = 10
-    
-    
     grille_axb(a,b)
     print (a,b)
     
@@ -174,12 +131,8 @@ def Difficile(a,b):
     
     
 def Moyen(a,b):
-    
     a = 10
     b = 10
-    
- 
-    
     grille_axb(a,b)
     print (a,b)
     
@@ -195,11 +148,8 @@ def Moyen(a,b):
     
     
 def Facile(a,b):
-    
     a = 10
     b = 10
-
-    
     grille_axb(a,b)
     print (a,b)
     
@@ -212,8 +162,6 @@ def Facile(a,b):
         tabposition[i] = 5*[0]
         
     numero_bato = 1
-    
-   
     
 def grille_axb(a,b):
     global fenetre,Bouton_Grille1,Bouton_Grille2,Bouton_Retour_Choix_Grille,cadre1
@@ -247,11 +195,8 @@ def grille_axb(a,b):
     time.sleep(0.2)
     
     
-    PlaySound('F:/ISN/PROJET/musique_jeu.wav', SND_ASYNC | SND_ALIAS | SND_LOOP)
+    PlaySound('U:/theo.boyer/ISN/Crapouillotage-master/musique_jeu.wav', SND_ASYNC | SND_ALIAS | SND_LOOP)
    
-
-    
-    
 def choix_grille():
     global fenetre,Bouton_Jouer,Bouton_Quitter,Bouton_Grille1,Bouton_Grille2
     
@@ -295,7 +240,18 @@ def retour_choix_grille():
     Bouton_Retour_Menu.pack()
     Bouton_Retour_Menu.place(x=900, y=600)
     
-
+    for i in range (a) :
+        for j in range (b) :
+            tableau[i][j] = 0
+            
+    placer(5)
+    placer(4)
+    placer(3)
+    placer(3)
+    placer(2)
+    placer(8)
+    placer(8)
+    
     
     
 def retour_Menu():
@@ -323,7 +279,7 @@ def retour_Menu():
 ##############################################################################  
 ##############################################################################
 
-
+                                #DEBUT-PROGRAMME#
 
 #FENETRE D'ACCUEIL et initialisation de tout les packs
 
@@ -343,9 +299,29 @@ label.place(x = 0 , y = 0)
 label = Tk.Label(image = photologo) 
 label.place(x = 700 , y = 40)
 
+a=10
+b=10
+
+tableau = a*[0]
+for i in range (a) :
+    tableau[i] = b*[0]
+    
+tabposition = 30*[0]
+for i in range (30) :
+    tabposition[i] = 5*[0]
+
+numero_bato = 1
+
+placer(5)
+placer(4)
+placer(3)
+placer(3)
+placer(2)
+placer(8)
+placer(8)
 
 
-Bouton_Jouer = Button(fenetre,height=5,width=20,image = photo,relief=GROOVE,borderwidth=3
+Bouton_Jouer = Button(fenetre,height=5,width=20,text='JOUER', font='Univers',relief=GROOVE,borderwidth=3
                       ,command=lambda: [son_boutons_next(),choix_grille()],bg="#B50D0D")
 Bouton_Jouer.pack()
 Bouton_Jouer.place(x=700, y=350)
