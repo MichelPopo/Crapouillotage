@@ -78,7 +78,7 @@ def affiche_grille(t) :
  
        
         
-def test_sylvain(i, j) :
+def test_touchecoule(i, j) :
     num = tableau[i][j]
 
     if num == 0 :
