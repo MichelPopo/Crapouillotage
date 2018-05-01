@@ -10,25 +10,49 @@ import time
 from wave import *
 from winsound import *
 
-                                          #FONCTIONS#
+
+##############################################################################  
+##############################################################################  
+
+
+
     
 def alert():
-    showinfo("alerte", "Bravo!")  
+    showinfo("alerte", "Bravo!")
+
+
+
+
+
     
-#SON  
+##############################################################################   
+##############################################################################  
+    
 
 
+
+     #SON  
+
+     
 def son_boutons_next(): 
-    PlaySound('U:/theo.boyer/ISN/Crapouillotage-master/audio/audio_bouton_next.wav', SND_ASYNC | SND_FILENAME)       
+    PlaySound('F:/Etude/ISN/PROJET/audio/audio_bouton_next.wav', SND_ASYNC | SND_FILENAME)       
 
 def son_boutons_retour():
-    PlaySound('U:/theo.boyer/ISN/Crapouillotage-master/audio/audio_bouton_retour.wav', SND_ASYNC | SND_FILENAME)
-    
-          
+    PlaySound('F:/Etude/ISN/PROJET/audio/audio_bouton_retour.wav', SND_ASYNC | SND_FILENAME)
 
-#Placement des bateaux dans la console        
+
+
+
+
+##############################################################################  
+##############################################################################  
+    
+          #DEF CONSOLE
+        #Placement des bateaux dans la console
+    
+    
 def placer (x):
-    global numero_bato, tabposition
+    global numero_bato
     test = 0
     while test == 0 :
         hv = random.randint(0,  1) # 1 vertical ou 0 horizontal
@@ -70,6 +94,7 @@ def placer (x):
     numero_bato = numero_bato + 1
       
 
+
 def affiche_grille(t) :
     for i in range (b) :
         for j in range (a) :
@@ -96,72 +121,141 @@ def test_touchecoule(i, j) :
             tabposition[num][3] = tabposition[num][3]-1
             tableau[i][j] = -2
      
+    
+
+################################################################################################################################################################  
+################################################################################################################################################################
+
+            #DEF AFFICHAGE
+            
+
 
 def affichage(tableau, tableau_bouton):
+    global nombre_tours, nombre_coups,coups_restants,Compteur
     
-    for i in range (a):
-        for j in range (b):
-            if tableau[i][j]==-1:
-                tableau_bouton[i][j]= Button(cadre1, image = photo1,width=50, height = 50).grid(row=i, column=j)
+    
+    if nombre_tours==nombre_coups :
+        
+        partie_perdue()
+        
+        
+    else:
+        for i in range (a):
+            for j in range (b):
+                if tableau[i][j]==-1:   #raté
+                    tableau_bouton[i][j]= Button(cadre1, image = photo1,width=50, height = 50).grid(row=i, column=j)
                 
-            if tableau[i][j]==-2:
-                tableau_bouton[i][j]= Button(cadre1, image = photo2,width=50, height = 50).grid(row=i, column=j)
+                if tableau[i][j]==-2: #touché
+                    tableau_bouton[i][j]= Button(cadre1, image = photo3,width=50, height = 50).grid(row=i, column=j)
+                    
+                    
+                if tableau[i][j]==-3:   #coulé
+                    tableau_bouton[i][j]= Button(cadre1, image = photo2,width=50, height = 50).grid(row=i, column=j)
                 
-            if tableau[i][j]==-3:
-                tableau_bouton[i][j]= Button(cadre1, image = photo3,width=50, height = 50).grid(row=i, column=j)
-
-
-
+   
+                    
+    nombre_coups = nombre_coups+1
+    coups_restants = nombre_tours-nombre_coups
+    coups_.pack()
+    coups_.place(x=100,y=900)
+    Compteur = Label(fenetre,text=coups_restants,font='Univers',height=1,bg='#55aadd')
+    Compteur.pack()
+    Compteur.place(x=210,y=900)
+    print ("nbcps",nombre_coups,"nbtrs",nombre_tours,'nbrest',coups_restants,)
+    
+    
+    
+    
+    
+    
+def partie_perdue():
+    global nombre_tours,nombre_coups
+    
+    Bouton_Retour_Choix_Grille.pack()
+    Bouton_Retour_Choix_Grille.place(x=950, y=350)
+    
+    image_perdu.pack()
+    image_perdu.place(x=600,y=335)
+    
+    Bouton_Quitter.pack()
+    Bouton_Quitter.place(x=950, y=500)
+    
+    
+    nombre_coups = 0
+    
+    
+    
+    
+    
+def partie_gagnée():
+    global nombre_tours,nombre_coups
+    
+    Bouton_Retour_Choix_Grille.pack()
+    Bouton_Retour_Choix_Grille.place(x=950, y=350)
+    
+    image_gagné.pack()
+    image_gagné.place(x=600,y=335)
+    
+    Bouton_Quitter.pack()
+    Bouton_Quitter.place(x=950, y=500)
+    
+    
+    nombre_coups = 0
+    
+    
+    
+    
+    
+    
 def Difficile(a,b):
+    global nombre_tours,nombre_coup,nb_gagner,nb_fait,nombre_coups
+    
+
+    nb_gagner = 7
+    
     a = 10
     b = 10
+    
+    nombre_tours = 2
+    nombre_coups = 0
+    
     grille_axb(a,b)
-    print (a,b)
-    
-    
-    tableau = a*[0]
-    for i in range (a) :
-        tableau[i] = b*[0]
-    
-    tabposition = 10*[0]
-    for i in range (10) :
-        tabposition[i] = 5*[0]
-        
-    numero_bato = 1
-    
+    print (a,b)   
     
 def Moyen(a,b):
+    global nombre_tours,nombre_coups,nb_gagner,nb_fait,nombre_coups
+    
+    
+    nb_gagner = 7
+    
     a = 10
     b = 10
+    
+    nombre_tours = 40
+    nombre_coups = 0
+    
     grille_axb(a,b)
     print (a,b)
-    
-    tableau = a*[0]
-    for i in range (a) :
-        tableau[i] = b*[0]
-    
-    tabposition = 10*[0]
-    for i in range (10) :
-        tabposition[i] = 5*[0]
-        
-    numero_bato = 1
-    
-    
+ 
 def Facile(a,b):
+    global nombre_tours, nombre_coups,nb_gagner,nb_fait,nombre_coups
+    
+    
+    nb_gagner = 7
+    
     a = 10
     b = 10
+    
+    nombre_tours = 50
+    nombre_coups = 0
+    
     grille_axb(a,b)
     print (a,b)
     
-    tableau = a*[0]
-    for i in range (a) :
-        tableau[i] = b*[0]
     
-    tabposition = 10*[0]
-    for i in range (10) :
-        tabposition[i] = 5*[0]
-        
-    numero_bato = 1
+    
+    
+    
     
 def grille_axb(a,b):
     global fenetre,Bouton_Grille1,Bouton_Grille2,Bouton_Retour_Choix_Grille,cadre1
@@ -181,28 +275,33 @@ def grille_axb(a,b):
     Bouton_Retour_Choix_Grille.place(x=700, y=500)
     
     
-    tableau_bouton= a*[0]
+    tableau_bouton= a*[0]  #création de la grille de boutons
     for i in range(a):
-        tableau_bouton[i] = b*[0]
+        tableau_bouton[i] = b*[0]                               
     for i in range(a):
         for j in range(b):
             tableau_bouton[i][j] = Button(cadre1, image = photo,width=50, height = 50
-                          ,command=lambda i=i, j=j:(test_touchecoule(i, j),affichage(tableau,tableau_bouton), affiche_grille(tableau))).grid(row=i, column=j)
+                          ,command=lambda i=i, j=j:(test_touchecoule(i, j),affichage(tableau,tableau_bouton)
+                          ,affiche_grille(tableau))).grid(row=i, column=j)
+                                
     
-    
-    cadre1.pack 
+    cadre1.pack #affichage du canvas dans lequel est la grille
     cadre1.place(x=20,y=50)
     time.sleep(0.2)
     
     
-    PlaySound('U:/theo.boyer/ISN/Crapouillotage-master/musique_jeu.wav', SND_ASYNC | SND_ALIAS | SND_LOOP)
+    PlaySound('F:/Etude/ISN/PROJET/musique_jeu.wav', SND_ASYNC | SND_ALIAS | SND_LOOP)
    
+
+    
+    
+    
 def choix_grille():
-    global fenetre,Bouton_Jouer,Bouton_Quitter,Bouton_Grille1,Bouton_Grille2
+    global fenetre,Bouton_Jouer,Bouton_Quitter
     
     Bouton_Jouer.pack()
     Bouton_Jouer.pack_forget()
-    
+  
     Bouton_Quitter.pack()
     Bouton_Quitter.pack_forget()
     
@@ -219,11 +318,25 @@ def choix_grille():
     Bouton_Retour_Menu.place(x=900, y=600)
     
     
+    
+    
 def retour_choix_grille():
-    global fenetre,tableau,cadre,Bouton_Retour_Choix_Grille,tableau_bouton
+    global fenetre,tableau,cadre,Bouton_Retour_Choix_Grille,tableau_bouton,nombre_coups,nombre_tours
     
     cadre1.pack()
     cadre1.pack_forget()
+    
+    image_gagné.pack()
+    image_gagné.pack_forget()
+    
+    image_perdu.pack()
+    image_perdu.pack_forget()
+    
+    Bouton_Retour_Choix_Grille.pack()
+    Bouton_Retour_Choix_Grille.pack_forget()
+    
+    Bouton_Quitter.pack()
+    Bouton_Quitter.pack_forget()
     
     Bouton_Facile.pack()
     Bouton_Facile.place(x=500, y=400)
@@ -234,26 +347,27 @@ def retour_choix_grille():
     Bouton_Difficile.pack()
     Bouton_Difficile.place(x=900, y=400)
     
-    Bouton_Retour_Choix_Grille.pack()
-    Bouton_Retour_Choix_Grille.pack_forget()
-    
     Bouton_Retour_Menu.pack()
     Bouton_Retour_Menu.place(x=900, y=600)
+    
+
     
     for i in range (a) :
         for j in range (b) :
             tableau[i][j] = 0
             
+
+    placer(8)
+    placer(8)
     placer(5)
     placer(4)
     placer(3)
     placer(3)
     placer(2)
-    placer(8)
-    placer(8)
     
+    nombre_tours==0
     
-    
+
 def retour_Menu():
     
     Bouton_Facile.pack()
@@ -275,19 +389,26 @@ def retour_Menu():
     Bouton_Retour_Menu.pack_forget()
     
     
+    
 
-##############################################################################  
-##############################################################################
+################################################################################################################################################################# 
+#################################################################################################################################################################
 
-                                #DEBUT-PROGRAMME#
+
+                #MAIN PROG
 
 #FENETRE D'ACCUEIL et initialisation de tout les packs
+
+
+
 
 
 fenetre = Tk.Tk()
 fenetre.title("Crapouillotage")
 fenetre.resizable(width=False, height=False)
 fenetre.geometry("1280x960")
+
+
 
 photologo=Tk.PhotoImage(file ='Images/logo.gif')
 
@@ -299,6 +420,8 @@ label.place(x = 0 , y = 0)
 label = Tk.Label(image = photologo) 
 label.place(x = 700 , y = 40)
 
+
+
 a=10
 b=10
 
@@ -306,22 +429,24 @@ tableau = a*[0]
 for i in range (a) :
     tableau[i] = b*[0]
     
-tabposition = 30*[0]
-for i in range (30) :
+tabposition = 100*[0]
+for i in range (100) :
     tabposition[i] = 5*[0]
 
 numero_bato = 1
 
+placer(8)
+placer(8)
 placer(5)
 placer(4)
 placer(3)
 placer(3)
 placer(2)
-placer(8)
-placer(8)
 
 
-Bouton_Jouer = Button(fenetre,height=5,width=20,text='JOUER', font='Univers',relief=GROOVE,borderwidth=3
+
+
+Bouton_Jouer = Button(fenetre,height=5,width=20,font='Univers',text='JOUER',relief=GROOVE,borderwidth=3
                       ,command=lambda: [son_boutons_next(),choix_grille()],bg="#B50D0D")
 Bouton_Jouer.pack()
 Bouton_Jouer.place(x=700, y=350)
@@ -330,22 +455,21 @@ Bouton_Quitter = Button(fenetre,height=5,width=20,font='Univers',relief=GROOVE,t
 Bouton_Quitter.pack()
 Bouton_Quitter.place(x=950, y=350)
 
-            
+
+       
 
 menubar = Menu(fenetre)
-
-
 menu1 = Menu(menubar, tearoff=0)
 menu1.add_separator()
 menu1.add_command(label="Quitter", command=fenetre.destroy)
 menubar.add_cascade(label="Fichier", menu=menu1)
-
 
 menu3 = Menu(menubar, tearoff=0)
 menu3.add_command(label="A propos", command=alert)
 menubar.add_cascade(label="Aide", menu=menu3)
 
 fenetre.config(menu=menubar) 
+
 
 
 
@@ -356,6 +480,21 @@ photo1=Tk.PhotoImage(file ='Images/raté.gif')
 photo2=Tk.PhotoImage(file ='Images/touché.gif')
 
 photo3=Tk.PhotoImage(file ='Images/coulé.gif')
+
+photo4=Image.open("F:/Etude/ISN/PROJET/Images/gagné.png")
+photo4.save('gagné.gif','GIF')
+photo4=Tk.PhotoImage(file ='gagné.gif')
+
+photo5=Image.open("F:/Etude/ISN/PROJET/Images/perdu.jpg")
+photo5.save('perdu.gif','GIF')
+photo5=Tk.PhotoImage(file='perdu.gif')
+
+
+image_gagné = Tk.Label(image = photo4)
+
+
+image_perdu = Tk.Label(image = photo5)
+
 
 
 
@@ -389,9 +528,14 @@ Bouton_Retour_Menu= Button(fenetre, height=5, width=20 ,font='Raavi', relief=GRO
 
 
 cadre1= Canvas(fenetre, bg="grey") 
+coups_= Label(fenetre,text= 'coups restants: ', font='Univers',bg='#55aadd')
 
+nombre_tours = 0
+nombre_coups = 0
+nb_gagner = 0 
+nb_touché = 0
+coups_restants = 0
 
- 
 fenetre.mainloop()
 
 
