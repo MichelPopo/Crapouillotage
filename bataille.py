@@ -187,7 +187,7 @@ def grille_axb(a,b):
     for i in range(a):
         for j in range(b):
             tableau_bouton[i][j] = Button(cadre1, image = photo,width=50, height = 50
-                          ,command=lambda i=i, j=j:(test_sylvain(i, j),affichage(tableau,tableau_bouton), affiche_grille(tableau))).grid(row=i, column=j)
+                          ,command=lambda i=i, j=j:(test_touchecoule(i, j),affichage(tableau,tableau_bouton), affiche_grille(tableau))).grid(row=i, column=j)
     
     
     cadre1.pack 
