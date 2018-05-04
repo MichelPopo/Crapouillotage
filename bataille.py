@@ -35,10 +35,10 @@ def alert():
 
      
 def son_boutons_next(): 
-    PlaySound('F:/Etude/ISN/PROJET/audio/audio_bouton_next.wav', SND_ASYNC | SND_FILENAME)       
+    PlaySound('U:/paulantoi.bernard/Perso/ISN/PROJET/audio/audio_bouton_next.wav', SND_ASYNC | SND_FILENAME)       
 
 def son_boutons_retour():
-    PlaySound('F:/Etude/ISN/PROJET/audio/audio_bouton_retour.wav', SND_ASYNC | SND_FILENAME)
+    PlaySound('U:/paulantoi.bernard/Perso/ISN/PROJET/audio/audio_bouton_retour.wav', SND_ASYNC | SND_FILENAME)
 
 
 
@@ -53,17 +53,17 @@ def son_boutons_retour():
     
 def placer (x):
     global numero_bato
-    test = 0
-    while test == 0 :
-        hv = random.randint(0,  1) # 1 vertical ou 0 horizontal
+    test = 0         
+    while test == 0 :  #tant que la condition n'est pas validée
+        hv = random.randint(0,  1) # aléatoire entre 1 vertical ou 0 horizontal
         print(hv)
-        if hv == 1 :
-            i = random.randint(0,  (a-1)-x)
-            j = random.randint(0,  b-1)
-            compteur = i
+        if hv == 1 :    #si c'est vertical
+            i = random.randint(0,  (a-1)-x)  #aléatoire entre 0 et hauteur du tableau - celle du bateau
+            j = random.randint(0,  b-1)        #aléatoire entre 0 et largeur du tableau - celle du bateau
+            compteur = i      #on crée un compteur pour nos tests ci dessous
             test = 0
-            while tableau[compteur][j] == 0 and compteur < i+x :
-                compteur = compteur + 1
+            while tableau[compteur][j] == 0 and compteur < i+x :  #tant que il n'y a pas de bateau et que l'on est pas sorti du bateau
+                compteur = compteur + 1 #
             if compteur == i+x :
                 test = 1
                 for t in range (i, i+x):
@@ -104,6 +104,7 @@ def affiche_grille(t) :
        
         
 def test_touchecoule(i, j) :
+    global nb_coule2
     num = tableau[i][j]
 
     if num == 0 :
@@ -117,6 +118,7 @@ def test_touchecoule(i, j) :
             else :               #bateau vertical
                 for s in range(tabposition[num][0], tabposition[num][0]+ tabposition[num][4]):
                     tableau[s][j] = -3
+            nb_coule2=nb_coule2 + 1
         else :
             tabposition[num][3] = tabposition[num][3]-1
             tableau[i][j] = -2
@@ -131,13 +133,16 @@ def test_touchecoule(i, j) :
 
 
 def affichage(tableau, tableau_bouton):
-    global nombre_tours, nombre_coups,coups_restants,Compteur
+    global nombre_tours, nombre_coups,coups_restants,Compteur, nb_gagne, nb_coule, nb_coule2
     
     
     if nombre_tours==nombre_coups :
         
         partie_perdue()
         
+    elif nb_gagne==nb_coule :
+        
+        partie_gagnee()
         
     else:
         for i in range (a):
@@ -154,6 +159,7 @@ def affichage(tableau, tableau_bouton):
                 
    
                     
+    nb_coule = nb_coule2
     nombre_coups = nombre_coups+1
     coups_restants = nombre_tours-nombre_coups
     coups_.pack()
@@ -161,7 +167,7 @@ def affichage(tableau, tableau_bouton):
     Compteur = Label(fenetre,text=coups_restants,font='Univers',height=1,bg='#55aadd')
     Compteur.pack()
     Compteur.place(x=210,y=900)
-    print ("nbcps",nombre_coups,"nbtrs",nombre_tours,'nbrest',coups_restants,)
+    print ("nbcps",nombre_coups,"nbtrs",nombre_tours,'nbrest',coups_restants,'nbcoule', nb_coule2, )
     
     
     
@@ -187,14 +193,14 @@ def partie_perdue():
     
     
     
-def partie_gagnée():
+def partie_gagnee():
     global nombre_tours,nombre_coups
     
     Bouton_Retour_Choix_Grille.pack()
     Bouton_Retour_Choix_Grille.place(x=950, y=350)
     
-    image_gagné.pack()
-    image_gagné.place(x=600,y=335)
+    image_gagne.pack()
+    image_gagne.place(x=600,y=335)
     
     Bouton_Quitter.pack()
     Bouton_Quitter.place(x=950, y=500)
@@ -208,10 +214,10 @@ def partie_gagnée():
     
     
 def Difficile(a,b):
-    global nombre_tours,nombre_coup,nb_gagner,nb_fait,nombre_coups
+    global nombre_tours,nombre_coup,nb_gagne,nb_coule,nombre_coups
     
 
-    nb_gagner = 7
+    nb_gagne = 5
     
     a = 10
     b = 10
@@ -223,10 +229,10 @@ def Difficile(a,b):
     print (a,b)   
     
 def Moyen(a,b):
-    global nombre_tours,nombre_coups,nb_gagner,nb_fait,nombre_coups
+    global nombre_tours,nombre_coups,nb_gagne,nb_coule,nombre_coups
     
     
-    nb_gagner = 7
+    nb_gagne = 5
     
     a = 10
     b = 10
@@ -238,10 +244,10 @@ def Moyen(a,b):
     print (a,b)
  
 def Facile(a,b):
-    global nombre_tours, nombre_coups,nb_gagner,nb_fait,nombre_coups
+    global nombre_tours, nombre_coups,nb_gagne,nb_fait,nombre_coups
     
     
-    nb_gagner = 7
+    nb_gagne = 5
     
     a = 10
     b = 10
@@ -290,7 +296,7 @@ def grille_axb(a,b):
     time.sleep(0.2)
     
     
-    PlaySound('F:/Etude/ISN/PROJET/musique_jeu.wav', SND_ASYNC | SND_ALIAS | SND_LOOP)
+    PlaySound('U:/paulantoi.bernard/Perso/ISN/PROJET/musique_jeu.wav', SND_ASYNC | SND_ALIAS | SND_LOOP)
    
 
     
@@ -357,8 +363,7 @@ def retour_choix_grille():
             tableau[i][j] = 0
             
 
-    placer(8)
-    placer(8)
+
     placer(5)
     placer(4)
     placer(3)
@@ -435,8 +440,8 @@ for i in range (100) :
 
 numero_bato = 1
 
-placer(8)
-placer(8)
+
+
 placer(5)
 placer(4)
 placer(3)
@@ -477,20 +482,16 @@ photo=Tk.PhotoImage(file ='Images/blanc.gif')
 
 photo1=Tk.PhotoImage(file ='Images/raté.gif')
 
-photo2=Tk.PhotoImage(file ='Images/touché.gif')
+photo2=Tk.PhotoImage(file ='Images/coulé.gif')
 
-photo3=Tk.PhotoImage(file ='Images/coulé.gif')
+photo3=Tk.PhotoImage(file ='Images/touché.gif')
 
-photo4=Image.open("F:/Etude/ISN/PROJET/Images/gagné.png")
-photo4.save('gagné.gif','GIF')
-photo4=Tk.PhotoImage(file ='gagné.gif')
+photo4=Tk.PhotoImage(file ='Images/gagné.gif')
 
-photo5=Image.open("F:/Etude/ISN/PROJET/Images/perdu.jpg")
-photo5.save('perdu.gif','GIF')
-photo5=Tk.PhotoImage(file='perdu.gif')
+photo5=Tk.PhotoImage(file='Images/perdu.gif')
+3
 
-
-image_gagné = Tk.Label(image = photo4)
+image_gagne = Tk.Label(image = photo4)
 
 
 image_perdu = Tk.Label(image = photo5)
@@ -532,8 +533,9 @@ coups_= Label(fenetre,text= 'coups restants: ', font='Univers',bg='#55aadd')
 
 nombre_tours = 0
 nombre_coups = 0
-nb_gagner = 0 
-nb_touché = 0
+nb_gagne = 0 
+nb_coule = 0
+nb_coule2=0
 coups_restants = 0
 
 fenetre.mainloop()
@@ -550,26 +552,17 @@ fenetre.mainloop()
 
 
 
-affiche_grille(tableau)
+#    affiche_grille(tableau)
 
-for i in range (numero_bato) :
-    for j in range (5) :
-        print(tabposition[i][j], end=' ')
-    print(sep=" ")
+  #  for i in range (numero_bato) :
+    #    for j in range (5) :
+      #      print(tabposition[i][j], end=' ')
+        #print(sep=" ")
 
 
-#for s in range (1) :
-#    v = random.randint(0, 9)
-#    r = random.randint(0, 9)
-#    test_sylvain(v, r)
-    
-#for i in range (b) :
-#    for j in range (a) :
-#        test_sylvain(i, j)
+    #affiche_grille(tableau)
 
-affiche_grille(tableau)
-
-for i in range (numero_bato) :
-    for j in range (5) :
-        print(tabposition[i][j], end=' ')
-    print(sep=" ")
+    #for i in range (numero_bato) :
+      #  for j in range (5) :
+        #    print(tabposition[i][j], end=' ')
+        #print(sep=" ")
