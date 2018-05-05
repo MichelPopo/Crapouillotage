@@ -54,22 +54,22 @@ def son_boutons_retour():
 def placer (x):
     global numero_bato
     test = 0         
-    while test == 0 :  #tant que la condition n'est pas validée
-        hv = random.randint(0,  1) # aléatoire entre 1 vertical ou 0 horizontal
+    while test == 0 :                               #test pour savoir si le bateau n'en chevauche pas un autre ou ne sort pas du tableau (tant que la condition n'est pas validée)
+        hv = random.randint(0,  1)                  # aléatoire entre 1 vertical ou 0 horizontal
         print(hv)
-        if hv == 1 :    #si c'est vertical
-            i = random.randint(0,  (a-1)-x)  #aléatoire entre 0 et hauteur du tableau - celle du bateau
-            j = random.randint(0,  b-1)        #aléatoire entre 0 et largeur du tableau - celle du bateau
-            compteur = i      #on crée un compteur pour nos tests ci dessous
+        if hv == 1 :                                #si c'est vertical
+            i = random.randint(0,  (a-1)-x)         #aléatoire entre 0 et hauteur du tableau - celle du bateau
+            j = random.randint(0,  b-1)             #aléatoire entre 0 et largeur du tableau - celle du bateau
+            compteur = i                            #on crée un compteur pour nos tests ci dessous
             test = 0
-            while tableau[compteur][j] == 0 and compteur < i+x :  #tant que il n'y a pas de bateau et que l'on est pas sorti du bateau
-                compteur = compteur + 1 #
-            if compteur == i+x :
-                test = 1
-                for t in range (i, i+x):
-                    tableau[t][j] = numero_bato
+            while tableau[compteur][j] == 0 and compteur < i+x :  #tant qu'il n'y a pas de bateau dans la case et que l'on est pas sorti du tableau
+                compteur = compteur + 1             #le compteur est augmenté et on passe à la case à coté
+            if compteur == i+x :                    #si on arrive enfin à la fin de la taille du bateau et qu'il n'y a pas eu de problèmes
+                test = 1                            #le test est bon
+                for t in range (i, i+x):            #une boucle pour créer le bateau
+                    tableau[t][j] = numero_bato     #et le placer dans le tabposition en fonction de son rang
                     
-        else : 
+        else :                                      #pareil mais pour un bateau horizontal
             i = random.randint(0,  (a-1))
             j = random.randint(0,  (b-1)-x)
             compteur = j
@@ -80,8 +80,8 @@ def placer (x):
                 test = 1
                 for t in range (j, j+x):
                     tableau[i][t]= numero_bato
-                    
-    tabposition[numero_bato][0] = i
+                                                
+    tabposition[numero_bato][0] = i                 #création du tabposition avec nos infos sur les bateaux à l'interieur
     tabposition[numero_bato][1] = j
     tabposition[numero_bato][2] = hv
     tabposition[numero_bato][3] = x
@@ -91,37 +91,37 @@ def placer (x):
     print("i =  ", i ,"j =   ",   j)
     print("x = ",  x)
     print(numero_bato)
-    numero_bato = numero_bato + 1
+    numero_bato = numero_bato + 1                   #l'indice indiquant la place du tableau dans le bateau ainsi que la valeur de ses cases est augmenté
       
 
 
-def affiche_grille(t) :
-    for i in range (b) :
+def affiche_grille(t) :                             #fonction qui affiche le tableau
+    for i in range (b) :                            #double boucle pour parcourir tout le tableau
         for j in range (a) :
-            print(repr(t[i][j]).rjust(2) , end=' ')
+            print(repr(t[i][j]).rjust(2) , end=' ') #affichage avec alignement
         print(sep=" ")
  
        
         
-def test_touchecoule(i, j) :
+def test_touchecoule(i, j) :                        #fonction pour jouer
     global nb_coule2
     num = tableau[i][j]
 
-    if num == 0 :
-        tableau[i][j] = -1
-    elif num > 0 :
-        if tabposition[num][3] == 1 : # le bateau est coulé
+    if num == 0 :                                   #la case ne contient pas de bateaux
+        tableau[i][j] = -1                          #tir dans l'eau = -1 (pour l'affichage)
+    elif num > 0 :                                  #sinon il y a un bateau
+        if tabposition[num][3] == 1 :               #le bateau est coulé (indice de cases restantes du bateau)
             tabposition[num][3] = 0
-            if tabposition[num][2] == 0 : # bateau horizontal
-                for s in range(tabposition[num][1], tabposition[num][1]+ tabposition[num][4]):
-                    tableau[i][s] = -3
-            else :               #bateau vertical
+            if tabposition[num][2] == 0 :           #si bateau horizontal
+                for s in range(tabposition[num][1], tabposition[num][1]+ tabposition[num][4]): #du début du bateau jusqu'à cette première case + la longueur du bateau
+                    tableau[i][s] = -3              #on donne la valeur -3 à tout le bateau
+            else :                                  #si bateau vertical, pareil que pour horizontal
                 for s in range(tabposition[num][0], tabposition[num][0]+ tabposition[num][4]):
                     tableau[s][j] = -3
-            nb_coule2=nb_coule2 + 1
-        else :
-            tabposition[num][3] = tabposition[num][3]-1
-            tableau[i][j] = -2
+            nb_coule2=nb_coule2 + 1                 #variable indiquant les bateaux coulés augmente
+        else :                                      #sinon bateau touché
+            tabposition[num][3] = tabposition[num][3]-1 #décrémentation dans le tabposition
+            tableau[i][j] = -2                      #on donne une case bateau touché = -2
      
     
 
