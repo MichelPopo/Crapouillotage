@@ -54,22 +54,22 @@ def son_boutons_retour():
 def placer (x):
     global numero_bato
     test = 0
-    while test == 0 :
-        hv = random.randint(0,  1) # 1 vertical ou 0 horizontal
+    while test == 0 :                               #test pour savoir si le bateau n'en chevauche pas un autre ou ne sort pas du tableau (tant que la condition n'est pas validée)
+        hv = random.randint(0,  1)                  # aléatoire entre 1 vertical ou 0 horizontal
         print(hv)
-        if hv == 1 :
-            i = random.randint(0,  (a-1)-x)
-            j = random.randint(0,  b-1)
-            compteur = i
+        if hv == 1 :                                #si c'est vertical
+            i = random.randint(0,  (a-1)-x)         #aléatoire entre 0 et hauteur du tableau - celle du bateau
+            j = random.randint(0,  b-1)             #aléatoire entre 0 et largeur du tableau - celle du bateau
+            compteur = i                            #on crée un compteur pour nos tests ci dessous
             test = 0
-            while tableau[compteur][j] == 0 and compteur < i+x :
-                compteur = compteur + 1
-            if compteur == i+x :
-                test = 1
-                for t in range (i, i+x):
-                    tableau[t][j] = numero_bato
+            while tableau[compteur][j] == 0 and compteur < i+x :  #tant qu'il n'y a pas de bateau dans la case et que l'on est pas sorti du tableau
+                compteur = compteur + 1             #le compteur est augmenté et on passe à la case à coté
+            if compteur == i+x :                    #si on arrive enfin à la fin de la taille du bateau et qu'il n'y a pas eu de problèmes
+                test = 1                            #le test est bon
+                for t in range (i, i+x):            #une boucle pour créer le bateau
+                    tableau[t][j] = numero_bato     #et le placer dans le tabposition en fonction de son rang
                     
-        else : 
+        else :                                      #pareil mais pour un bateau horizontal
             i = random.randint(0,  (a-1))
             j = random.randint(0,  (b-1)-x)
             compteur = j
@@ -80,8 +80,8 @@ def placer (x):
                 test = 1
                 for t in range (j, j+x):
                     tableau[i][t]= numero_bato
-                    
-    tabposition[numero_bato][0] = i
+                                                
+    tabposition[numero_bato][0] = i                 #création du tabposition avec nos infos sur les bateaux à l'interieur
     tabposition[numero_bato][1] = j
     tabposition[numero_bato][2] = hv
     tabposition[numero_bato][3] = x
@@ -91,37 +91,38 @@ def placer (x):
     print("i =  ", i ,"j =   ",   j)
     print("x = ",  x)
     print(numero_bato)
-    numero_bato = numero_bato + 1
+    numero_bato = numero_bato + 1                   #l'indice indiquant la place du tableau dans le bateau ainsi que la valeur de ses cases est augmenté
       
 
 
-def affiche_grille(t) :
-    for i in range (b) :
+def affiche_grille(t) :                             #fonction qui affiche le tableau
+    for i in range (b) :                            #double boucle pour parcourir tout le tableau
         for j in range (a) :
-            print(repr(t[i][j]).rjust(2) , end=' ')
+            print(repr(t[i][j]).rjust(2) , end=' ') #affichage avec alignement
         print(sep=" ")
  
        
         
-def test_touchecoule(i, j) :
+def test_touchecoule(i, j) :                        #fonction pour jouer
     global nb_coule2
     num = tableau[i][j]
 
-    if num == 0 :
-        tableau[i][j] = -1
-    elif num > 0 :
-        if tabposition[num][3] == 1 : # le bateau est coulé
+    if num == 0 :                                   #la case ne contient pas de bateaux
+        tableau[i][j] = -1                          #tir dans l'eau = -1 (pour l'affichage)
+    elif num > 0 :                                  #sinon il y a un bateau
+        if tabposition[num][3] == 1 :               #le bateau est coulé (indice de cases restantes du bateau)
             tabposition[num][3] = 0
-            if tabposition[num][2] == 0 : # bateau horizontal
-                for s in range(tabposition[num][1], tabposition[num][1]+ tabposition[num][4]):
-                    tableau[i][s] = -3
-            else :               #bateau vertical
+            if tabposition[num][2] == 0 :           #si bateau horizontal
+                for s in range(tabposition[num][1], tabposition[num][1]+ tabposition[num][4]): #du début du bateau jusqu'à cette première case + la longueur du bateau
+                    tableau[i][s] = -3              #on donne la valeur -3 à tout le bateau
+            else :                                  #si bateau vertical, pareil que pour horizontal
                 for s in range(tabposition[num][0], tabposition[num][0]+ tabposition[num][4]):
                     tableau[s][j] = -3
-            nb_coule2=nb_coule2 + 1
-        else :
-            tabposition[num][3] = tabposition[num][3]-1
-            tableau[i][j] = -2
+            nb_coule2=nb_coule2 + 1                 #variable indiquant les bateaux coulés augmente
+        else :                                      #sinon bateau touché
+            tabposition[num][3] = tabposition[num][3]-1 #décrémentation dans le tabposition
+            tableau[i][j] = -2                      #on donne une case bateau touché = -2
+     
      
     
 
@@ -136,31 +137,30 @@ def affichage(tableau, tableau_bouton):
     global nombre_tours, nombre_coups,coups_restants,Compteur, nb_gagne, nb_coule2, nb_coule
     
     
-    if nb_gagne==nb_coule :
+    if nb_gagne==nb_coule :                 #Si le nombre bateaux coulés est egal au nombre de bateaux alors la partie est gagnée 
         
         partie_gagnee()
         
         
-    elif nombre_tours==nombre_coups :
+    elif nombre_tours==nombre_coups :       #Si le nombre de coups déja fait est egal aux nombres de coups max alors la partie est perdue
         
         partie_perdue()
         
-    else:
-        for i in range (a):
+    else:                                   #si ni l'une ni l'autre des deux fonctions precedentes alors la grlle se réaffiche avec le coup précedement fait
+        for i in range (a):                 
             for j in range (b):
                 if tableau[i][j]==-1:   #raté
                     tableau_bouton[i][j]= Button(cadre1, image = photo1,width=50, height = 50).grid(row=i, column=j)
                 
-                if tableau[i][j]==-2: #touché
+                if tableau[i][j]==-2:   #touché
                     tableau_bouton[i][j]= Button(cadre1, image = photo3,width=50, height = 50).grid(row=i, column=j)
-                    
                     
                 if tableau[i][j]==-3:   #coulé
                     tableau_bouton[i][j]= Button(cadre1, image = photo2,width=50, height = 50).grid(row=i, column=j)
                 
    
                     
-    nb_coule = nb_coule2
+    nb_coule = nb_coule2                    #COMPTEUR 
     nombre_coups = nombre_coups+1
     coups_restants = nombre_tours-nombre_coups
     coups_.pack()
@@ -178,8 +178,9 @@ def affichage(tableau, tableau_bouton):
 def partie_perdue():
     global nombre_tours,nombre_coups
     
-    Bouton_Retour_Choix_Grille.pack()
-    Bouton_Retour_Choix_Grille.place(x=950, y=350)
+    
+    Bouton_Retour_Choix_Grille.pack()                                          
+    Bouton_Retour_Choix_Grille.place(x=950, y=350)                              #Placement des elements utilisés avec pack
     
     image_perdu.pack()
     image_perdu.place(x=600,y=335)
@@ -188,7 +189,7 @@ def partie_perdue():
     Bouton_Quitter.place(x=950, y=500)
     
     
-    nombre_coups = 0
+    nombre_coups = 0                                                            #réinitialisation des variables
     
     
     
@@ -196,9 +197,10 @@ def partie_perdue():
     
 def partie_gagnee():
     global nombre_tours,nombre_coups
+                                           
     
-    Bouton_Retour_Choix_Grille.pack()
-    Bouton_Retour_Choix_Grille.place(x=950, y=350)
+    Bouton_Retour_Choix_Grille.pack()                                           
+    Bouton_Retour_Choix_Grille.place(x=950, y=350)                              #Placement des elements utilisés avec pack
     
     image_gagne.pack()
     image_gagne.place(x=600,y=335)
@@ -207,7 +209,7 @@ def partie_gagnee():
     Bouton_Quitter.place(x=950, y=500)
     
     
-    nombre_coups = 0
+    nombre_coups = 0                                                            #réinitialisation des variables
     
     
     
@@ -218,45 +220,45 @@ def Difficile(a,b):
     global nombre_tours,nombre_coup,nb_gagne,nb_coule,nombre_coups
     
 
-    nb_gagne = 5
+    nb_gagne = 5                                                                #mise a jour des termes de la partie 
     
     a = 10
     b = 10
     
-    nombre_tours = 2
-    nombre_coups = 0
+    nombre_tours = 30    #nombre de coups max
+    nombre_coups = 0     #nombre de coups faits
     
-    grille_axb(a,b)
+    grille_axb(a,b)      #initialisation de la def grille
     print (a,b)   
     
 def Moyen(a,b):
     global nombre_tours,nombre_coups,nb_gagne,nb_coule,nombre_coups
     
     
-    nb_gagne = 5
+    nb_gagne = 5                                                                #mise a jour des termes de la partie 
     
     a = 10
     b = 10
     
-    nombre_tours = 40
-    nombre_coups = 0
+    nombre_tours = 40    #nombre de coups max
+    nombre_coups = 0     #nombre de coups faits
     
-    grille_axb(a,b)
+    grille_axb(a,b)      #initialisation de la def grille
     print (a,b)
  
 def Facile(a,b):
     global nombre_tours, nombre_coups,nb_gagne,nb_coule,nombre_coups
     
     
-    nb_gagne = 5
+    nb_gagne = 5                                                                #mise a jour des termes de la partie 
     
     a = 10
     b = 10
     
-    nombre_tours = 50
-    nombre_coups = 0
+    nombre_tours = 50    #nombre de coups max
+    nombre_coups = 0     #nombre de coups faits
     
-    grille_axb(a,b)
+    grille_axb(a,b)      #initialisation de la def grille
     print (a,b)
     
     
@@ -297,7 +299,7 @@ def grille_axb(a,b):
     time.sleep(0.2)
     
     
-    PlaySound('musique_jeu2.wav', SND_ASYNC | SND_ALIAS | SND_LOOP)
+    PlaySound('audio/musique_jeu.wav', SND_ASYNC | SND_ALIAS | SND_LOOP)
    
 
     
@@ -365,7 +367,7 @@ def retour_choix_grille():
             
 
 
-    placer(5)                                                                    #placement des bateaux et réaffichage de la grille
+    placer(5)                                                                   #placement des bateaux et réaffichage de la grille
     placer(4)
     placer(3)
     placer(3)
@@ -377,7 +379,7 @@ def retour_choix_grille():
 
 def retour_Menu():
     
-    Bouton_Facile.pack()                                                         #Disparition des elements dont on ne se sert plus avec pack_forget
+    Bouton_Facile.pack()                                                        #Disparition des elements dont on ne se sert plus avec pack_forget
     Bouton_Facile.pack_forget()
     
     Bouton_Moyen.pack()
@@ -386,7 +388,7 @@ def retour_Menu():
     Bouton_Difficile.pack()
     Bouton_Difficile.pack_forget()
     
-    Bouton_Jouer.pack()                                                          #Placement des elements utilisés avec pack
+    Bouton_Jouer.pack()                                                         #Placement des elements utilisés avec pack
     Bouton_Jouer.place(x=700, y=350)
     
     Bouton_Quitter.pack()
@@ -438,7 +440,7 @@ photo5=Tk.PhotoImage(file='Images/perdu.gif')
                 #CREATION DU MENU JOUER_QUITTER
 
 
-label = Tk.Label(image = photo6)                                                 #Image de fond         
+label = Tk.Label(image = photo6)                                                #Image de fond         
 label.place(x = 0 , y = 0)
 
 label = Tk.Label(image = photologo)                                             #Image logo
@@ -472,7 +474,7 @@ for i in range (100) :
 
 numero_bato = 1
 
-placer(5)
+placer(5)      #appelation de la def placer dans la console
 placer(4)
 placer(3)
 placer(3)
@@ -590,4 +592,4 @@ affiche_grille(tableau)
 for i in range (numero_bato) :
     for j in range (5) :
         print(tabposition[i][j], end=' ')
-    print(sep=" ")
+print(sep=" ")
